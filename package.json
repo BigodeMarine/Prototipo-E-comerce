@@ -1,0 +1,19 @@
+{
+  "name": "sra-santos-prototipo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Protótipo estático de e-commerce de joias Sra Santos",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "check": "node --check dist/app.js && node --check dist/hero-3d.js && node --check scripts/serve.cjs && node --check playwright.config.cjs && node --check tests/store.spec.cjs",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "ci": "npm run check && npm test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

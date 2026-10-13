@@ -1,5 +1,7 @@
 # Sra Santos — Protótipo de e-commerce de joias
 
+[![CI](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml/badge.svg)](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml)
+
 Protótipo navegável para apresentar uma proposta de loja de joias. Possui identidade em tons de rosa, catálogo ilustrativo e uma experiência completa de compra simulada.
 
 **Demonstração:** https://aure-joias-prototipo.sunsetolm10.chatgpt.site
@@ -89,6 +91,30 @@ O anel em destaque é uma reconstrução visual aproximada da referência fotogr
 4. Simule o frete com o CEP `01001-000`.
 5. Continue usando os dados fictícios já preenchidos.
 6. Experimente Pix ou cartão e conclua a simulação.
+
+## Integração contínua (CI)
+
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) executa em pushes e pull requests para `main`, e também pode ser iniciado manualmente pela aba **Actions**.
+
+A CI usa Node.js 22 e Chromium para:
+
+1. Instalar as dependências de teste com `npm ci`, usando o lockfile.
+2. Verificar a sintaxe dos scripts JavaScript.
+3. Testar catálogo, busca, ordenação, favoritos, persistência da sacola, totais, frete e checkout.
+4. Verificar o layout em cinco larguras de tela e o menu móvel.
+5. Verificar a renderização e rotação do anel 3D e o modo de movimento reduzido.
+
+O relatório HTML fica disponível como artifact `playwright-report` por 7 dias. Falhas também incluem screenshots e traces para diagnóstico. A CI não publica o site.
+
+Para executar os mesmos checks localmente, com Node.js 22 ou superior:
+
+```bash
+npm ci
+npx playwright install chromium
+npm run ci
+```
+
+Para abrir a interface interativa dos testes, execute `npm run test:ui`. O servidor estático dos testes é iniciado automaticamente pelo Playwright.
 
 ## Verificações realizadas
 
