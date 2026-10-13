@@ -57,7 +57,40 @@ Também é possível servir a pasta `dist/` com outra ferramenta de servidor est
 
 ## Tecnologias
 
-HTML5, CSS3, JavaScript, SVG, WebGL e `localStorage`. A renderização 3D usa geometria e shaders próprios, sem bibliotecas externas.
+Interface estática em **HTML, CSS e JavaScript**, com renderização 3D nativa no navegador.
+
+### Interface e experiência
+
+![HTML5](https://img.shields.io/badge/HTML5-AD1C5C?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-ED1268?style=for-the-badge&logo=css&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-AD1C5C?style=for-the-badge&logo=javascript&logoColor=white)
+![WebGL](https://img.shields.io/badge/WebGL-ED1268?style=for-the-badge&logo=webgl&logoColor=white)
+![SVG](https://img.shields.io/badge/SVG-AD1C5C?style=for-the-badge&logo=svg&logoColor=white)
+
+| Tecnologia | Papel no projeto |
+| --- | --- |
+| **HTML5** | Estrutura das páginas, formulários e diálogos acessíveis. |
+| **CSS3** | Identidade visual rosa, layout responsivo e cards e botões arredondados. |
+| **JavaScript** | Busca, filtros, favoritos, sacola e checkout demonstrativo. |
+| **WebGL · GLSL** | Geometria, materiais, iluminação e rotação do anel 3D com shaders próprios. |
+| **SVG** | Ilustrações das peças, cenário do destaque e ícones da interface. |
+| **Web Storage · localStorage** | Persistência de favoritos e sacola no navegador. |
+
+### Testes e entrega
+
+![Node.js](https://img.shields.io/badge/Node.js_22-AD1C5C?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-ED1268?style=for-the-badge)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-AD1C5C?style=for-the-badge&logo=githubactions&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-ED1268?style=for-the-badge&logo=vercel&logoColor=white)
+
+| Ferramenta | Papel no projeto |
+| --- | --- |
+| **Node.js 22 · npm** | Servidor estático de desenvolvimento, verificação de sintaxe e execução dos testes. |
+| **Playwright · Chromium** | Testes de navegação, compra simulada, responsividade e animação 3D. |
+| **GitHub Actions** | Automação da CI e do deploy após a aprovação dos testes. |
+| **Vercel CLI** | Publicação de produção na Vercel, quando os secrets estiverem configurados. |
+
+O site funciona sem framework, etapa de build ou bibliotecas 3D externas. As dependências de desenvolvimento são usadas nos testes; as fontes ficam hospedadas junto ao projeto.
 
 ## Identidade visual
 
