@@ -1,0 +1,8 @@
+node_modules/
+tests/
+scripts/
+playwright-report/
+test-results/
+playwright.config.cjs
+.github/
+README.md

@@ -1,6 +1,6 @@
 # Sra Santos — Protótipo de e-commerce de joias
 
-[![CI](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml/badge.svg)](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml/badge.svg)](https://github.com/BigodeMarine/Prototipo-E-comerce/actions/workflows/ci.yml)
 
 Protótipo navegável para apresentar uma proposta de loja de joias. Possui identidade em tons de rosa, catálogo ilustrativo e uma experiência completa de compra simulada.
 
@@ -104,7 +104,7 @@ A CI usa Node.js 22 e Chromium para:
 4. Verificar o layout em cinco larguras de tela e o menu móvel.
 5. Verificar a renderização e rotação do anel 3D e o modo de movimento reduzido.
 
-O relatório HTML fica disponível como artifact `playwright-report` por 7 dias. Falhas também incluem screenshots e traces para diagnóstico. A CI não publica o site.
+O relatório HTML fica disponível como artifact `playwright-report` por 7 dias. Falhas também incluem screenshots e traces para diagnóstico. Após a CI passar, o job de CD publica a branch `main` na Vercel, quando os secrets estiverem configurados. Pull requests executam somente os testes.
 
 Para executar os mesmos checks localmente, com Node.js 22 ou superior:
 
@@ -115,6 +115,41 @@ npm run ci
 ```
 
 Para abrir a interface interativa dos testes, execute `npm run test:ui`. O servidor estático dos testes é iniciado automaticamente pelo Playwright.
+
+## Deploy contínuo (CD) na Vercel
+
+O mesmo workflow publica o site em produção **somente depois que o job de CI passar**, em pushes para `main` ou execução manual do workflow nessa branch. A URL publicada aparece no resumo da execução e no ambiente `production` do GitHub.
+
+### Configuração inicial
+
+1. Crie ou selecione o projeto **Sra Santos** na Vercel.
+2. No seu computador, dentro deste repositório, execute:
+
+   ```bash
+   npx vercel@63.1.2 link
+   ```
+
+   Faça login, escolha a conta ou equipe correta e selecione o projeto. Esse comando gera `.vercel/project.json`, que não deve ser commitado.
+3. Em [Vercel → Account Settings → Tokens](https://vercel.com/account/tokens), crie um token com acesso à conta ou equipe do projeto.
+4. No GitHub, abra **Settings → Secrets and variables → Actions → New repository secret** e cadastre:
+
+   | Secret | Valor |
+   | --- | --- |
+   | `VERCEL_TOKEN` | Token criado na Vercel |
+   | `VERCEL_ORG_ID` | Campo `orgId` de `.vercel/project.json` |
+   | `VERCEL_PROJECT_ID` | Campo `projectId` de `.vercel/project.json` |
+
+5. Na aba **Actions**, abra **CI/CD → Run workflow**, selecione `main` e execute. Novos pushes para `main` também acionam o fluxo.
+
+Enquanto os secrets não estiverem cadastrados, o job informa quais nomes faltam e **não executa a publicação**. Nenhum token deve ser colocado no código ou no README.
+
+### Configuração do projeto estático
+
+[`vercel.json`](vercel.json) define `dist` como diretório de saída e dispensa build e instalação de dependências de produção. A Vercel CLI está fixada na versão `63.1.2` no workflow.
+
+A opção `git.deploymentEnabled: false` desativa os deployments automáticos da integração Git da Vercel, para que a publicação seja feita pelo workflow após a CI. Com essa configuração, os deploys e previews automáticos do Git ficam desativados; o CD deste projeto publica somente produção.
+
+O arquivo [`.vercelignore`](.vercelignore) exclui testes, relatórios e dependências locais do envio. A configuração `.vercel/` fica ignorada pelo Git. O workflow não cancela deploys de produção em andamento quando chega outro push; pull requests podem cancelar checks anteriores.
 
 ## Verificações realizadas
 

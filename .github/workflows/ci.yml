@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
@@ -52,3 +52,59 @@ jobs:
             test-results/
           if-no-files-found: ignore
           retention-days: 7
+
+  deploy:
+    name: Deploy de produção na Vercel
+    needs: validate
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: ${{ steps.publish.outputs.url }}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Verificar configuração da Vercel
+        id: config
+        shell: bash
+        run: |
+          configured=true
+          for variable in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [[ -z "${!variable}" ]]; then
+              echo "::warning::Cadastre o secret ${variable} para habilitar o deploy."
+              configured=false
+            fi
+          done
+          echo "configured=${configured}" >> "$GITHUB_OUTPUT"
+          if [[ "$configured" == false ]]; then
+            echo '### Deploy não executado' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Cadastre VERCEL_TOKEN, VERCEL_ORG_ID e VERCEL_PROJECT_ID nos secrets do GitHub. Consulte o README.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Obter código aprovado pela CI
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar Vercel CLI
+        if: steps.config.outputs.configured == 'true'
+        run: npm install --global vercel@63.1.2
+
+      - name: Publicar na Vercel
+        if: steps.config.outputs.configured == 'true'
+        id: publish
+        shell: bash
+        run: |
+          deployment_url=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN")
+          echo "url=${deployment_url}" >> "$GITHUB_OUTPUT"
+          echo "### Site publicado" >> "$GITHUB_STEP_SUMMARY"
+          echo "${deployment_url}" >> "$GITHUB_STEP_SUMMARY"
