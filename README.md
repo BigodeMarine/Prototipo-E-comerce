@@ -198,4 +198,4 @@ Validar identidade da marca, classificação dos produtos, composição, fotos, 
 
 ---
 
-feito com café e muito javascript
+<p align="center">Feito com ☕ e muito javascript.</p>
