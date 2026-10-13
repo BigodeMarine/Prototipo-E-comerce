@@ -4,9 +4,7 @@
 
 Protótipo navegável para apresentar uma proposta de loja de joias. Possui identidade em tons de rosa, catálogo ilustrativo e uma experiência completa de compra simulada.
 
-**Demonstração:** https://aure-joias-prototipo.sunsetolm10.chatgpt.site
-
-A demonstração hospedada está privada e pode exigir acesso autorizado. A versão deste repositório pode ser executada localmente.
+**Acesse o site:** [prototipo-e-comerce.vercel.app](https://prototipo-e-comerce.vercel.app)
 
 ## Funcionalidades
 
@@ -198,6 +196,6 @@ Somente favoritos e sacola são salvos localmente no navegador. Os campos de ent
 
 Validar identidade da marca, classificação dos produtos, composição, fotos, preços e políticas comerciais. Integrar uma plataforma de comércio com gestão de estoque, pedidos, pagamentos, frete e atendimento antes de aceitar compras reais.
 
-## Fontes e licença
+---
 
-Rajdhani e Share Tech Mono são distribuídas sob a **SIL Open Font License 1.1**. Os termos estão em [`OFL.txt`](dist/assets/OFL.txt) e [`ShareTechMono-OFL.txt`](dist/assets/ShareTechMono-OFL.txt). Este repositório não define uma licença geral para o restante do código.
+feito com café e muito javascript
